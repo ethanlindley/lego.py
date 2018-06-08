@@ -1,7 +1,9 @@
 from pyraknet.server import Server as RNServer
 from pyraknet.server import Event as RNEvent
 from core.packet_headers import PacketHeaders
+
 from .packets.handshake import Handshake
+from .packets.client_login_req import ClientLoginRequest
 
 from util.logger import Logger
 
@@ -15,6 +17,7 @@ class AuthServer(RNServer):
         self.auth_handlers = {}
 
         self.register_handler(PacketHeaders.HANDSHAKE.value, Handshake)
+        self.register_handler(PacketHeaders.CLIENT_LOGIN_REQ.value, ClientLoginRequest)
 
         self.logger.info('server started')
 
@@ -22,7 +25,8 @@ class AuthServer(RNServer):
         header = packet[0:8]
         if header in self.auth_handlers:
             res = self.auth_handlers[header].construct_packet(self, packet)
-            self.send(res, address)
+            if res is not None:
+                self.send(res, address)
         else:
             self.logger.warn('no registered handlers found for header-{}'.format(header))
 
