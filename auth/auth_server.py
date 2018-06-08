@@ -11,15 +11,16 @@ from util.logger import Logger
 class AuthServer(RNServer):
     logger = Logger('AuthServer')
 
-    def __init__(self, ip='127.0.0.1', port=1001, backlog=10000, password=b'3.25 ND1'):
+    def __init__(self, ip='127.0.0.1', port=1001, backlog=10000, password=b'3.25 ND1', database=None):
         super().__init__((ip, port), backlog, password)
+        
+        self.database = database
+
         self.add_handler(RNEvent.UserPacket, self.handle_packet)
         self.auth_handlers = {}
 
         self.register_handler(PacketHeaders.HANDSHAKE.value, Handshake)
         self.register_handler(PacketHeaders.CLIENT_LOGIN_REQ.value, ClientLoginRequest)
-
-        self.logger.info('server started')
 
     def handle_packet(self, packet, address):
         header = packet[0:8]
