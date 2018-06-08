@@ -1,1 +1,2 @@
 -e hg+https://bitbucket.org/lcdr/pyraknet.git#egg=pyraknet
+mongoclient==0.15.0
