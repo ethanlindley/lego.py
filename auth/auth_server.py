@@ -1,7 +1,7 @@
 from pyraknet.server import Server as RNServer
 from pyraknet.server import Event as RNEvent
-from .packets.handshake import Handshake
 from core.packet_headers import PacketHeaders
+from .packets.handshake import Handshake
 
 from util.logger import Logger
 

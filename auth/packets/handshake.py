@@ -18,9 +18,9 @@ class Handshake(object):
 
         res = WriteStream()
         res.write(PacketHeaders.HANDSHAKE.value)
-        res.write(c_ulong(client_ver))
+        res.write(c_ulong(171022))
         res.write(c_ulong(0x93))
-        res.write(c_ulong(0x01))  # 0x01 for auth, 0x04 for everything else
+        res.write(c_ulong(1))  # 1 for auth, 4 for everything else
         res.write(c_ulong(os.getpid()))
         res.write(c_short(0xff))
         res.write(str(socket.gethostbyname(socket.gethostname())), allocated_length=33)
