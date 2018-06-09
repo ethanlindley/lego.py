@@ -32,6 +32,7 @@ class ClientLoginRequest(object):
                 elif account.is_banned:
                     res.write(c_uint8(0x02))
                     found = True
+            break
         
         if found is False:
             try:
