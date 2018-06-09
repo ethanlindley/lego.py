@@ -15,3 +15,8 @@ class ClientLoginRequest(object):
 
         uname = stream.read(str, allocated_length=33)
         pword = stream.read(str, allocated_length=41)
+
+        res = WriteStream()
+        # TODO - construct rest of packet response (see packet docs for more information)
+
+        return res

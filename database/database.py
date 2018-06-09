@@ -6,8 +6,8 @@ from .account import Account
 
 class Database(object):
     def __init__(self, key):
-        if not os.path.exists('./data'):
-            os.makedirs('./data/db')
+        if not os.path.exists('./database/data'):
+            os.makedirs('./database/data/db')
 
         connect('lego-py', host='localhost', port=27017)  # TODO - setup config for server/db specific constants
         self.key = Fernet(key)
