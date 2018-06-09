@@ -28,6 +28,8 @@ class AuthServer(RNServer):
             res = self.auth_handlers[header].construct_packet(self, packet)
             if res is not None:
                 self.send(res, address)
+            else:
+                self.logger.warn('unable to construct packet for header-{}'.format(header))
         else:
             self.logger.warn('no registered handlers found for header-{}'.format(header))
 
