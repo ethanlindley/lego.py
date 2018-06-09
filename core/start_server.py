@@ -8,6 +8,6 @@ class Server(object):
     logger = Logger('lego.py')
 
     def __init__(self):
-        self.db = Database(b'MfUZyaOtwjTkcQR-llEy9hyBB6BrViT_tkqyQ8R-MUQ=')
-        self.auth_server = AuthServer(database=self.db)
+        db = Database(b'MfUZyaOtwjTkcQR-llEy9hyBB6BrViT_tkqyQ8R-MUQ=')
+        auth_server = AuthServer(database=self.db)
         self.logger.info('server started')

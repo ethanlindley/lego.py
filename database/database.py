@@ -14,22 +14,24 @@ class Database(object):
         
         self.accounts = []
 
-    def register_account_client(self, username, password, banned, is_admin, account_id):
+    def register_account_client(self, username, password, banned, is_admin, account_id, characters):
         account = Account(
             account_id=account_id,
             username=username,
             password=self.key.encrypt(bytes(password)),
             banned=banned,
-            is_admin=is_admin
+            is_admin=is_admin,
+            characters=characters
         )
         self.accounts.append(account)
 
-    def register_account_db(self, username, password, banned, is_admin, account_id):
+    def register_account_db(self, username, password, banned, is_admin, account_id, characters):
         account = Account(
             account_id=account_id,
             username=username,
             password=self.key.encrypt(bytes(password)),
             banned=banned,
-            is_admin=is_admin
+            is_admin=is_admin,
+            characters=characters
         )
         account.save()

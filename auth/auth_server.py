@@ -25,6 +25,7 @@ class AuthServer(RNServer):
     def handle_packet(self, packet, address):
         header = packet[0:8]
         if header in self.auth_handlers:
+            self.auth_handlers[header].database = self.database
             res = self.auth_handlers[header].construct_packet(self, packet)
             if res is not None:
                 self.send(res, address)

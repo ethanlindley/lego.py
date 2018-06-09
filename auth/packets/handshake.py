@@ -9,9 +9,6 @@ from util.logger import Logger
 class Handshake(object):
     logger = Logger('Handshake')
 
-    def __init__(self):
-        pass
-
     def construct_packet(self, packet):
         stream = ReadStream(packet)
         client_ver = stream.read(c_ulong)  # TODO - check client ver against server
