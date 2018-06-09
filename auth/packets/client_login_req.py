@@ -36,8 +36,8 @@ class ClientLoginRequest(object):
         
         if found is False:
             try:
-                self.database.register_account_db(uname, pword)
-                self.database.register_account_client(uname, pword)
+                self.database.register_account_db(username=uname, password=pword)
+                self.database.register_account_client(username=uname, password=pword)
                 res.write(c_uint8(0x01))
             except Exception as e:
                 self.logger.warn('unable to create user \'{}\''.format())

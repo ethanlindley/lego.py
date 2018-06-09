@@ -9,5 +9,5 @@ class Server(object):
 
     def __init__(self):
         db = Database(b'MfUZyaOtwjTkcQR-llEy9hyBB6BrViT_tkqyQ8R-MUQ=')
-        auth_server = AuthServer(database=self.db)
+        auth_server = AuthServer(database=db)
         self.logger.info('server started')

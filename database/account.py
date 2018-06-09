@@ -3,8 +3,8 @@ from mongoengine import *
 
 class Account(Document):
     account_id = IntField(required=True)
-    username = StringField(required=True, max_length=20)
+    username = StringField(required=True)
     password = StringField(required=True)
-    banned = BooleanField(required=True, default=False)
-    is_admin = BooleanField(required=True, default=False)
-    characters = ListField(required=True, default=[])
+    banned = BooleanField(required=True)
+    is_admin = BooleanField(required=True)
+    characters = ListField()
