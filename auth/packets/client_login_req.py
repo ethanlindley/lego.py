@@ -14,8 +14,8 @@ class ClientLoginRequest(object):
     def construct_packet(self, packet):
         stream = ReadStream(packet)
 
-        uname = stream.read(str, allocated_length=33)
-        pword = stream.read(str, allocated_length=41)
+        uname = stream.read(str, allocated_length=33).decode('latin1')
+        pword = stream.read(str, allocated_length=41).decode('latin1')
 
         res = WriteStream()
         res.write(PacketHeaders.CLIENT_LOGIN_REQ.value)
@@ -24,6 +24,7 @@ class ClientLoginRequest(object):
         while found is False:
             for account in self.database.accounts:
                 if account.username == uname and account.password == password:
+                    self.logger.debug('found user {} in database'.format(uname))
                     res.write(c_uint8(0x01))
                     found = True
                 elif account.username == uname and account.password != password:
@@ -38,9 +39,10 @@ class ClientLoginRequest(object):
             try:
                 self.database.register_account_db(username=uname, password=pword)
                 self.database.register_account_client(username=uname, password=pword)
+                self.logger.debug('successfully created and added user \'{}\' to the database'.format(uname))
                 res.write(c_uint8(0x01))
             except Exception as e:
-                self.logger.warn('unable to create user \'{}\''.format())
+                self.logger.warn('unable to create user \'{0}\' - {1}'.format(uname, e))
         
         res.write(CString('Talk_Like_A_Pirate', allocated_length=33))  # unknown
         res.write(CString(allocated_length=33*7))  # unknown

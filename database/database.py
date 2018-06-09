@@ -18,7 +18,7 @@ class Database(object):
         account = Account(
             account_id=account_id,
             username=username,
-            password=self.key.encrypt(password.encode()),
+            password=self.key.encrypt(bytes(password, 'latin1')),
             banned=banned,
             is_admin=is_admin
         )
@@ -28,7 +28,7 @@ class Database(object):
         account = Account(
             account_id=account_id,
             username=username,
-            password=self.key.encrypt(password.encode()),
+            password=self.key.encrypt(bytes(password, 'latin1')),
             banned=banned,
             is_admin=is_admin
         )
