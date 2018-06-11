@@ -3,3 +3,6 @@
 
 ## Getting started
 Once the repository has been cloned in your environment, run `pip3 install -r requirements.txt` before starting the server. Next, be sure to download and install the latest release of the MongoDB community server from [here](https://www.mongodb.com/download-center?jmp=nav#community). Once installed, open a bash terminal and execute the following commands: `mkdir resources/data/db`, `mongod --dbpath resources/data` (or replace the dbpath argument with your own specified location where you'd like to store the database-related files).
+
+## Contributing
+Help is always more than welcome! Feel free to fork the repository, commit your changes to your fork and submit a pull request! I'll be sure to check out the PRs and provide some feedback.
