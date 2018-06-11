@@ -108,4 +108,4 @@ venv.bak/
 .vscode/
 
 # mongodb
-resources/data/db
+resources/data
