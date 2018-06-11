@@ -15,23 +15,27 @@ class ClientLoginRequest(object):
     def construct_packet(self, packet):
         stream = ReadStream(packet)
 
+        # TODO - figure out why we aren't receiving user credentials correctly?
+        """
         uname = stream.read(str, allocated_length=33)
         pword = stream.read(str, allocated_length=41)
 
+        self.logger.debug('user with credentials {0}:{1} attempting to login'.format(uname, pword))
+        """
+        uname = 'dev'
+        pword = 'dev'
+
         res = WriteStream()
-        res.write(PacketHeaders.CLIENT_LOGIN_REQ.value)
+        res.write(PacketHeaders.CLIENT_LOGIN_RES.value)
 
         found = False
         while found is False:
             for account in self.database.accounts:
-                if account.username == uname and account.password == password:
+                if account.username == uname and account.password == pword:
                     self.logger.debug('found user {} in database'.format(uname))
                     res.write(c_uint8(0x01))
                     found = True
-                elif account.username == uname and account.password != password:
-                    res.write(c_uint8(0x06))
-                    found = True
-                elif account.is_banned:
+                elif account.banned:
                     res.write(c_uint8(0x02))
                     found = True
             break
@@ -70,5 +74,5 @@ class ClientLoginRequest(object):
         res.write('error', length_type=c_uint16)  # custom err msg
         res.write(c_uint16(0))
         res.write(c_ulong(4))
-        
+
         return res

@@ -10,9 +10,16 @@ class Database(object):
             os.makedirs('./resources/data/db')
 
         connect('lego-py', host='localhost', port=27017)  # TODO - setup config for server/db specific constants
-        self.key = Fernet(key)
-        
         self.accounts = []
+        self.get_accounts()
+
+        self.key = Fernet(key)
+
+    def get_accounts(self):
+        # load the database and store account objects in a list 
+        # that can be dynamically read across server instancess
+        for account in Account.objects:
+            self.accounts.append(account)
 
     def register_account_client(self, username='', password='', banned=False, is_admin=False):
         account = Account(
@@ -22,6 +29,7 @@ class Database(object):
             banned=banned,
             is_admin=is_admin
         )
+        print(account.password)
         self.accounts.append(account)
 
     def register_account_db(self, username='', password='', banned=False, is_admin=False):
