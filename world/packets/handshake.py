@@ -14,7 +14,7 @@ class Handshake(object):
         res.write(PacketHeaders.HANDSHAKE.value)
         res.write(c_ulong(171022))  # TODO - fix checking client ver
         res.write(c_ulong(0x93))
-        res.write(c_ulong(1))
+        res.write(c_ulong(4))
         res.write(c_ulong(os.getpid()))
         res.write(c_short(0xff))
         res.write(str(socket.gethostbyname(socket.gethostname())), allocated_length=33)

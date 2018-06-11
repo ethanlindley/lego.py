@@ -1,3 +1,2 @@
 -e hg+https://bitbucket.org/lcdr/pyraknet.git#egg=pyraknet
-cryptography==2.2.2
 mongoengine==0.15.0
