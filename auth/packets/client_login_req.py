@@ -1,6 +1,6 @@
-import bcrypt
 import uuid
 from pyraknet.bitstream import c_bool, c_uint8, c_uint16, c_ulong, c_ulonglong, c_ushort, ReadStream, WriteStream
+from core.server_objects import Session
 from core.structs import CString
 from core.packet_headers import PacketHeaders
 
@@ -10,10 +10,10 @@ from util.logger import Logger
 class ClientLoginRequest(object):
     logger = Logger('ClientLoginRequest')
 
-    def __init__(self, database=None):
-        self.database = database
+    def __init__(self):
+        self.database = None
 
-    def construct_packet(self, packet):
+    def construct_packet(self, packet, address):
         stream = ReadStream(packet)
 
         # TODO - figure out why we aren't receiving user credentials correctly?
@@ -29,10 +29,18 @@ class ClientLoginRequest(object):
         res = WriteStream()
         res.write(PacketHeaders.CLIENT_LOGIN_RES.value)
 
+        user_key = str(uuid.uuid4())
+
         for account in self.database.accounts:
             if account.username == uname and account.password == pword:
                 self.logger.debug('found user {} in database'.format(uname))
                 res.write(c_uint8(0x01))
+                
+                session = Session()
+                session.acc_username = uname
+                session.acc_userkey = user_key
+                session.address = address
+                self.database.sessions.append(session)
                 break
             elif account.banned:
                 res.write(c_uint8(0x02))
@@ -45,8 +53,7 @@ class ClientLoginRequest(object):
         res.write(c_uint16(10))  # v. current
         res.write(c_uint16(64))  # v. minor
 
-        user_token = str(uuid.uuid4())
-        res.write(user_token[0:18], allocated_length=33)
+        res.write(user_key[0:18], allocated_length=33)
         
         res.write(CString('127.0.0.1', allocated_length=33))  # world IP
         res.write(CString('127.0.0.1', allocated_length=33))  # chat IP

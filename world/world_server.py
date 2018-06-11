@@ -3,6 +3,7 @@ from pyraknet.server import Event as RNEvent
 from core.packet_headers import PacketHeaders
 
 from .packets.handshake import Handshake
+from .packets.client_session_info import ClientSessionInfo
 
 from util.logger import Logger
 
@@ -19,12 +20,13 @@ class WorldServer(RNServer):
         self.world_handlers = {}
 
         self.register_handler(PacketHeaders.HANDSHAKE.value, Handshake)
+        self.register_handler(PacketHeaders.CLIENT_SESSION_INFO.value, ClientSessionInfo)
 
     def handle_packet(self, packet, address):
         header = packet[0:8]
         if header in self.world_handlers:
             self.world_handlers[header].database = self.database
-            res = self.world_handlers[header].construct_packet(self, packet)
+            res = self.world_handlers[header].construct_packet(self, packet, address)
             if res is not None:
                 self.send(res, address)
             else:

@@ -5,8 +5,10 @@ from core.packet_headers import PacketHeaders
 
 
 class Handshake(object):
+    def __init__(self):
+        self.database = None
 
-    def construct_packet(self, packet):
+    def construct_packet(self, packet, address):
         stream = ReadStream(packet)
         client_ver = stream.read(c_ulong)  # TODO - check client ver against server
 

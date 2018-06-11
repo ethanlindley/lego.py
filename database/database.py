@@ -13,6 +13,7 @@ class Database(object):
         self.get_accounts()
 
         self.salt = salt
+        self.sessions = []
 
     def get_accounts(self):
         # load the database and store account objects in a list 
@@ -30,3 +31,9 @@ class Database(object):
         )
         account.save()
         self.accounts.append(account)
+
+    def get_session(self, address):
+        for s in self.sessions:
+            if s.address == address:
+                return s
+        return None
