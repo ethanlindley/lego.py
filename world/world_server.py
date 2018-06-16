@@ -22,17 +22,22 @@ class WorldServer(RNServer):
         self.register_handler(PacketHeaders.HANDSHAKE.value, Handshake)
         self.register_handler(PacketHeaders.CLIENT_SESSION_INFO.value, ClientSessionInfo)
 
+        self.omitted_headers = []  # add wanted omitted headers in here that dont need to send back a response to the client
+        self.omitted_headers.append(PacketHeaders.CLIENT_SESSION_INFO.value)
+
     def handle_packet(self, packet, address):
         header = packet[0:8]
         if header in self.world_handlers:
             self.world_handlers[header].database = self.database
             res = self.world_handlers[header].construct_packet(self, packet, address)
-            if res is not None:
+            if res is not None and header not in self.omitted_headers:
                 self.send(res, address)
+            elif header in self.omitted_headers:
+                pass  # don't need to send a packet response to client
             else:
-                self.logger.warn('unable to construct packet for header-{}'.format(header))
+                self.logger.warn('unable to construct packet for header {}'.format(header))
         else:
-            self.logger.warn('no registered handlers found for header-{}'.format(header))
+            self.logger.warn('no registered handlers found for header {}'.format(header))
 
     def register_handler(self, header, func):
         self.world_handlers[header] = func

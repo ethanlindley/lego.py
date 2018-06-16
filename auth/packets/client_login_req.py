@@ -14,15 +14,12 @@ class ClientLoginRequest(object):
         self.database = None
 
     def construct_packet(self, packet, address):
+        # TODO - figure out why we aren't receiving user credentials correctly?
         stream = ReadStream(packet)
 
-        # TODO - figure out why we aren't receiving user credentials correctly?
-        """
         uname = stream.read(str, allocated_length=33)
         pword = stream.read(str, allocated_length=41)
 
-        self.logger.debug('user with credentials {0}:{1} attempting to login'.format(uname, pword))
-        """
         uname = 'dev'
         pword = 'dev'
 
