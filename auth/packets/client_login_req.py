@@ -14,11 +14,15 @@ class ClientLoginRequest(object):
         self.database = None
 
     def construct_packet(self, packet, address):
-        # TODO - figure out why we aren't receiving user credentials correctly?
         stream = ReadStream(packet)
 
-        uname = stream.read(str, allocated_length=33)
-        pword = stream.read(str, allocated_length=41)
+        # TODO - figure out why we aren't receiving user credentials correctly?
+        """
+        uname = stream.read(str)
+        pword = stream.read(str, allocated_length=82)
+
+        self.logger.debug('new user trying to login with credentials {0}:{1}'.format(uname, pword))
+        """
 
         uname = 'dev'
         pword = 'dev'
@@ -38,10 +42,8 @@ class ClientLoginRequest(object):
                 session.acc_userkey = user_key
                 session.address = address
                 self.database.sessions.append(session)
-                break
             elif account.banned:
                 res.write(c_uint8(0x02))
-                break
         
         res.write(CString('Talk_Like_A_Pirate', allocated_length=33))  # unknown
         res.write(CString(allocated_length=33*7))  # unknown
